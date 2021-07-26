@@ -43,11 +43,12 @@ def create_circle_hole_shape(height = 10.0, width = 10.0, thickness = 10.0):
   face_idx = FACE_KEY.index(face_key)
   hole_bbox = (box-result).val().BoundingBox()
   tolerance_idx = face_idx // 2
-  tolerance = 0.001
+  tolerance = (1e-3)*(-1)**(face_idx % 2 + 1)
+  
   min_point = [hole_bbox.xmin, hole_bbox.ymin, hole_bbox.zmin]
   max_point = [hole_bbox.xmax, hole_bbox.ymax, hole_bbox.zmax]
-  min_point[tolerance_idx]-=0.001
-  max_point[tolerance_idx]+=0.001
+  min_point[tolerance_idx]+= tolerance
+  max_point[tolerance_idx]+= tolerance
 
   # set selector for hole and other faces
   hole_selector = BoxSelector(min_point, max_point)
